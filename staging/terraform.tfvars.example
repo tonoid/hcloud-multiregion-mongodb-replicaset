@@ -1,0 +1,146 @@
+# ============================================================================
+# Terraform Variables Configuration Example
+# ============================================================================
+# Copy this file to terraform.tfvars and fill in your actual values
+# Command: cp terraform.tfvars.example terraform.tfvars
+#
+# IMPORTANT: Never commit terraform.tfvars to version control!
+# It contains sensitive credentials and is already in .gitignore
+# ============================================================================
+
+# ============================================================================
+# PROVIDER AUTHENTICATION
+# ============================================================================
+
+# Hetzner Cloud API Token
+# Sign up: https://hetzner.cloud/?ref=imlNi04HXWMu (this is referral link to get 20€ credits)
+# How to get: https://console.hetzner.cloud/ → Security → API Tokens → Generate
+# Permissions: Read & Write
+hcloud_token = "YOUR_HETZNER_API_TOKEN_HERE"
+
+# Cloudflare API Token
+# How to get: https://dash.cloudflare.com/ → My Profile → API Tokens → Create Token
+# Template: "Edit zone DNS" for your domain
+cloudflare_token = "YOUR_CLOUDFLARE_API_TOKEN_HERE"
+
+# Cloudflare Zone ID
+# How to get: https://dash.cloudflare.com/ → Select your domain → API section (right sidebar)
+cloudflare_zone_id = "YOUR_CLOUDFLARE_ZONE_ID_HERE"
+
+# ============================================================================
+# CLUSTER CONFIGURATION
+# ============================================================================
+
+# Cluster Name
+# This will be used as prefix for all resources: {cluster_name}-network, {cluster_name}-mongo
+# Example: "staging01-myproject" creates "staging01-myproject-network" and "staging01-myproject-mongo"
+cluster_name = "staging01-myproject"
+
+# DNS Domain
+# Your domain managed by Cloudflare (used for TLS certificates and MongoDB hostnames)
+# Example: "example.com" → MongoDB nodes will be: hcloud-{cluster_name}-mongo-{region}-{number}.example.com
+dns_domain = "yourdomain.com"
+
+# ============================================================================
+# SSH CONFIGURATION
+# ============================================================================
+
+# SSH Private Key Path
+# Path to your SSH private key for server access
+# Generate with: ./generate_ssh_key.sh
+# This creates: ssh-keys/hcloud_terraform_ssh_key
+ssh_private_key_path = "../ssh-keys/hcloud_terraform_ssh_key"
+
+# ============================================================================
+# SECURITY CONFIGURATION
+# ============================================================================
+
+# Allowed SSH and MongoDB IPs
+# List of IP addresses (in CIDR notation) allowed to:
+# - SSH into MongoDB servers (port 22)
+# - Connect to MongoDB (port 27017)
+# - Access replica set communication (port 27019)
+#
+# IMPORTANT: Replace with your actual public IP address!
+# Find your IP: curl ifconfig.me
+# 
+# Examples:
+#   Single IP:    ["203.0.113.1/32"]
+#   Multiple IPs: ["203.0.113.1/32", "198.51.100.0/24"]
+#   Your office:  ["203.0.113.0/24"]
+allowed_ssh_ips = [
+  "YOUR_PUBLIC_IP_HERE/32",
+]
+
+# ============================================================================
+# MONGODB AUTHENTICATION
+# ============================================================================
+
+# MongoDB Admin Username
+# The root admin user for MongoDB
+# Default: "admin" (can be changed to anything you prefer)
+mongo_admin_username = "admin"
+
+# MongoDB Admin Password
+# IMPORTANT: Use a strong password!
+# Minimum 16 characters recommended with mix of letters, numbers, and symbols
+# Example: Use a password generator: openssl rand -base64 24
+mongo_admin_password = "CHANGE_THIS_TO_A_STRONG_PASSWORD"
+
+# ============================================================================
+# GRAFANA CLOUD MONITORING (OPTIONAL)
+# ============================================================================
+# Free tier available at: https://grafana.com/
+# Setup instructions in README.md
+# Leave disabled (false) if you don't want monitoring
+
+# Enable Grafana Monitoring
+# Set to true to install Alloy agent and push metrics to Grafana Cloud
+enable_grafana = false
+
+# Grafana Metrics URL
+# Your Grafana Cloud Prometheus remote write endpoint
+# Example: "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push"
+# How to get: Grafana Cloud → Prometheus → Send Metrics → Copy endpoint URL
+grafana_metrics_url = ""
+
+# Grafana Metrics Username
+# Your Grafana Cloud Prometheus instance ID / username
+# Example: "123456"
+# How to get: Grafana Cloud → Prometheus → Send Metrics → Copy username
+grafana_metrics_username = ""
+
+# Grafana API Key
+# Your Grafana Cloud API key for authentication
+# Example: "glc_eyJrIjoiMmE3OGU5N2QtMzRmZS00MTZjLTk0OTQtMjI..."
+# How to get: Grafana Cloud → Prometheus → Send Metrics → Generate API Key
+grafana_api_key = ""
+
+# ============================================================================
+# ADDITIONAL NOTES
+# ============================================================================
+#
+# MongoDB Configuration (from main.tf):
+# - Memory: 8GB RAM per instance (8192 MB)
+# - Regions: 3 nodes in US (Ashburn), 2 nodes in EU (Falkenstein)
+# - Server Types: CPX31 (US), CPX32 (EU) - 4 vCPU, 8GB RAM, 160GB NVMe
+# - TLS: Enabled with Let's Encrypt (free certificates)
+# - Backups: Disabled (enable in main.tf if needed)
+#
+# Cost Estimate:
+# - US: 3 × €16.49/mo = €49.47/mo
+# - EU: 2 × €10.99/mo = €21.98/mo
+# - Total: €71.45/mo (~$77/mo)
+#
+# Connection Strings (available after deployment):
+# - mongodb+srv://USER:PASS@{cluster_name}-mongo.{dns_domain}/?authSource=admin
+# - Direct: mongodb://USER:PASS@{hostname}:27017/?directConnection=true&tls=true
+#
+# Useful Commands:
+# - Deploy: cd staging && ./apply.sh
+# - Destroy: cd staging && ./destroy.sh
+# - View outputs: terraform output
+# - Show connection: terraform output mongodb_connection_string_srv
+#
+# ============================================================================
+
