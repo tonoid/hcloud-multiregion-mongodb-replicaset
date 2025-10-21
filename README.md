@@ -17,17 +17,17 @@ Recent cloud outages (like the AWS us-east-1 incident) have highlighted the impo
 
 ### Hetzner Cloud (This Solution)
 
-| Region | Nodes | Server Type | RAM | Monthly Cost |
-|--------|-------|-------------|-----|--------------|
+| Region | Nodes | Server Type | RAM per Node | Monthly Cost |
+|--------|-------|-------------|--------------|--------------|
 | US (Ashburn) | 3 | CPX31 | 8GB | €49.47 (3 × €16.49) |
 | EU (Falkenstein) | 2 | CPX32 | 8GB | €21.98 (2 × €10.99) |
-| **Total** | **5** | - | **40GB** | **€71.45/mo** (~$77/mo) |
+| **Total** | **5** | - | **8GB each** | **€71.45/mo** (~$77/mo) |
 
 ### MongoDB Atlas (AWS)
 
-| Tier | Nodes | RAM | Monthly Cost (Estimated) |
-|------|-------|-----|--------------------------|
-| M30 | 5 (3 US + 2 EU) | 40GB | **$1,200-1,400/mo** |
+| Tier | Nodes | RAM per Node | Monthly Cost (Estimated) |
+|------|-------|--------------|--------------------------|
+| M30 | 5 (3 US + 2 EU) | 8GB | **$1,200-1,400/mo** |
 
 **💡 Savings: ~$1,300/mo or ~$15,600/year (94% cost reduction)**
 
